@@ -6,6 +6,7 @@ import FileItem from "./components/FileItem.vue";
 
 // Data
 const selectedFiles = ref([] as SelectedFile[]);
+
 const isUploading: ComputedRef<boolean> = computed(() =>
   selectedFiles.value.some((file) => file.status == "uploading")
 );
@@ -31,7 +32,7 @@ const onSelectFiles = (event: Event) => {
 const clearFiles = () => (selectedFiles.value = []);
 
 const uploadSelectedFiles = () => {
-  selectedFiles.value.forEach((file: SelectedFile, idx: number) => {
+  selectedFiles.value.forEach((file: SelectedFile) => {
     file.status = "uploading";
     file.percentage = 0;
 
@@ -39,7 +40,6 @@ const uploadSelectedFiles = () => {
       file.percentage = Math.round((100 * event.loaded) / event.total);
     })
       .then((response) => {
-        console.log(response);
         file.status = "success";
       })
       .catch(() => {
@@ -83,18 +83,16 @@ const uploadSelectedFiles = () => {
         <a
           class="button button-danger"
           :class="{ disabled: isUploading }"
-          @click.prevent
           href="#"
-          @click="clearFiles"
+          @click.prevent="clearFiles"
           v-if="selectedFiles.length"
           >Clear</a
         >
         <a
           class="button button-upload"
           :class="{ disabled: isUploading }"
-          @click.prevent
           href="#"
-          @click="uploadSelectedFiles"
+          @click.prevent="uploadSelectedFiles"
           v-if="selectedFiles.length"
           >Upload</a
         >
