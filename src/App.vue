@@ -18,7 +18,7 @@ const onSelectFiles = (event: Event) => {
     return;
   }
 
-  selectedFiles.value = [];
+  clearFiles();
 
   Array.from(target.files).forEach((file: File) => {
     selectedFiles.value.push({
